@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 //Gets configuration information from discordConfig.json
-const config = require('./discrodConfig.json')
+const config = require('./discordConfig.json')
 
 //Token for bot
 const token = config.token;
@@ -38,7 +38,7 @@ client.on('message', function(message) {
 	var text = message.content;
     if (text.includes(prefix)) {
         processCommand(message);
-    } else if (text.includes('/') && message.author.id === adminID)
+    } else if (text.includes('/') && message.author.id === adminID) {
         processAdminCommand(message);
     } else {
         processNonCommand(message);
@@ -64,7 +64,7 @@ function processCommand(message) {
         //gets random idiot percentage
     } else if (text.includes('how dumb is') && containsMention(message)) {
         var name = getFirstMentionUsername(message);
-		sendMessage(message, name + " is " + rand(1, 100) + "% idiot right now!");
+		sendMessage(message, name + " is being " + rand(1, 100) + "% dumb right now!");
         //encourages or discourages author's yes or no question
     } else if (text.toLowerCase().includes("should")) {
         var decision = rand(1, 2);
@@ -89,23 +89,25 @@ function processNonCommand(message) {
 		}
          //responds to ayyy or with lmao
     } else if (text.toLowerCase().includes('ayyy')) {
-        sendMessage(message, 'lmao');
+        var textArray = text.toLowerCase().split(' ');
+        var found = textArray.indexOf('ayyy');
+        if (found != -1) //checks if ayyy is its own word
+            sendMessage(message, 'lmao');
         //responds to o shit with waddup
-    } else if (text.toLowerCase().includes('o shit')) {
-        sendMessage(message, 'waddup');
     }
 }
 
 //Processes the commands by the admin (NOK)
 function processAdminCommand(message){
     var text = message.content;
-
+        //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
     if (text.startsWith('/' + 'prefix')) {
         //Get arguements for the command, as !prefix +
         let args = text.split(" ").slice(1);
-        //change the configuration prefix
-        config.prefix = args[0];
-        //It will still go to default ! when the bot is restarted 
+        if ( args[0].localeCompare('/') != 0) {
+            //change the configuration prefix
+            config.prefix = args[0];
+        }
     }
 }
 
@@ -144,9 +146,9 @@ var Twitter = new TwitterPackage(secret);
 //Returns the latest tweet from a specific twitter handle
 function getTweet(handle, message){
     Twitter.get('statuses/user_timeline', {screen_name: handle, count: 1},  function(error, tweet, response){
-      if(error){
-        sendMessage(message, "Beep Boop: User could not be found");
-      }
-      sendMessage(message, '@' + handle + " 's latest tweet: \n\n" + tweet[0].text);  //Sends tweet text to the channel
-  });
+        if (error) {
+            sendMessage(message, "Beep Boop: User could not be found");
+        }
+            sendMessage(message, '@' + handle + " 's latest tweet: \n\n" + tweet[0].text);  //Sends tweet text to the channel
+        });
 }
