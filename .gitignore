@@ -1,5 +1,6 @@
 #ignore the config files
 *.json
+!spec/*.json
 
 #ignore mac specific files
 .DS_Store
