@@ -1,6 +1,5 @@
 #ignore the config files
-discordConfig.json
-twitterConfig.json
+*.json
 
 #ignore mac specific files
 .DS_Store
