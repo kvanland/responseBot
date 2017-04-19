@@ -45,7 +45,7 @@ client.on('message', function(message) {
     }
 });
 
-//Process commands from author (N0K)
+//Process commands from users
 function processCommand(message) {
     var text = message.content;
     var mentions = messsage.menitons.users;
@@ -57,14 +57,17 @@ function processCommand(message) {
         client.setTimeout(function(){
             sendMessage(message, message.author.username + ' here is your reminder ' + reminder);
         }, time);
+
         //Allows user to request the text of the latests tweet from x user
     } else if (text.includes('latest tweet') && text.includes('@')) {
         var username = text.substring(text.indexOf('@')+1);
         getTweet(username, message); //sends message from within due to asynchronous twitter request
+
         //gets random idiot percentage
     } else if (text.includes('how dumb is') && containsMention(message)) {
         var name = getFirstMentionUsername(message);
 		sendMessage(message, name + " is being " + rand(1, 100) + "% dumb right now!");
+
         //encourages or discourages author's yes or no question
     } else if (text.toLowerCase().includes("should")) {
         var decision = rand(1, 2);
@@ -87,17 +90,17 @@ function processNonCommand(message) {
 		if (mentionedName === botName) {
 			sendMessage(message, "you're welcome boi");
 		}
+
          //responds to ayyy or with lmao
     } else if (text.toLowerCase().includes('ayyy')) {
         var textArray = text.toLowerCase().split(' ');
         var found = textArray.indexOf('ayyy');
         if (found != -1) //checks if ayyy is its own word
             sendMessage(message, 'lmao');
-        //responds to o shit with waddup
     }
 }
 
-//Processes the commands by the admin (NOK)
+//Processes the commands by the admin based on adminID in discordConfig.json
 function processAdminCommand(message){
     var text = message.content;
         //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
@@ -113,7 +116,7 @@ function processAdminCommand(message){
 
 //returns random min to max integer
 function rand(min, max) {
-	return Math.floor(Math.random() * max + min);
+	 return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function sendMessage(message, text) {
