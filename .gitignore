@@ -1,6 +1,9 @@
+#ignore node modules
+node_modules
+
 #ignore the config files
-*.json
-!spec/*.json
+discordConfig.json
+twitterConfig.json
 
 #ignore mac specific files
 .DS_Store
