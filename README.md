@@ -1,7 +1,7 @@
 # ResponseBot: The multifunction discord text chat bot
 
 Node packages to install
-- Discord.js | npm install discord.js
+### Discord.js | npm install discord.js
 
 [Discord.js npm page](https://www.npmjs.com/package/discord.js)
 
@@ -9,7 +9,7 @@ Node packages to install
 
 [How to set up a discord bot](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token )
 
-- Twitter | npm install twitter
+### Twitter | npm install twitter
 
 [Twitter npm page](https://www.npmjs.com/package/twitter)
 
