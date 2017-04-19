@@ -1,8 +1,15 @@
 # ResponseBot: The multifunction discord text chat bot
 
-NPM packages used
-- Discord.js | https://www.npmjs.com/package/discord.js | https://discord.js.org/#/docs/main/stable/general/welcome | https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
-- Twitter | https://www.npmjs.com/package/twitter | http://techknights.org/workshops/nodejs-twitterbot/
+Node packages to install
+- Discord.js | npm install discord.js
+https://www.npmjs.com/package/discord.js | Discord.js npm page
+https://discord.js.org/#/docs/main/stable/general/welcome | Discord.js documentation
+https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token | How to set up a discord bot
+- Twitter | npm install twitter
+https://www.npmjs.com/package/twitter | twitter npm page
+http://techknights.org/workshops/nodejs-twitterbot/ | How to set up a twitter application
+
+# Functions 
 
 ## 1. Commands
 Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol.
