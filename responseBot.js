@@ -48,27 +48,20 @@ client.on('message', function(message) {
 //Process commands from users
 function processCommand(message) {
     var text = message.content;
-    var mentions = messsage.menitons.users;
+    var mentions = message.mentions.users;
 
-        //Allows user to request a reminder message x seconds
     if (text.includes('reminder')) {
         var time = parseInt(text.substring(text.indexOf('reminder ') + 9), 10) * 1000; //Time is requested in seconds so 60 would be a minute
         var reminder = text.substring(0, text.indexOf('reminder'));
         client.setTimeout(function(){
             sendMessage(message, message.author.username + ' here is your reminder ' + reminder);
         }, time);
-
-        //Allows user to request the text of the latests tweet from x user
     } else if (text.includes('latest tweet') && text.includes('@')) {
         var username = text.substring(text.indexOf('@')+1);
         getTweet(username, message); //sends message from within due to asynchronous twitter request
-
-        //gets random idiot percentage
     } else if (text.includes('how dumb is') && containsMention(message)) {
         var name = getFirstMentionUsername(message);
 		sendMessage(message, name + " is being " + rand(1, 100) + "% dumb right now!");
-
-        //encourages or discourages author's yes or no question
     } else if (text.toLowerCase().includes("should")) {
         var decision = rand(1, 2);
         if (decision == 1) {
@@ -79,10 +72,14 @@ function processCommand(message) {
     }
 }
 
+//JSON object that contians generic responses to specific messages
+var responses = require('./responses.json');
+
 //Process noncommands from anyone
 function processNonCommand(message) {
     var text = message.content;
     var mentions = message.mentions.users;
+
         //responds to thank you
     if (text.toLowerCase().includes("thanks") && containsMention(message)) {
 		var mentionedName = getFirstMentionUsername(message);
@@ -90,13 +87,9 @@ function processNonCommand(message) {
 		if (mentionedName === botName) {
 			sendMessage(message, "you're welcome boi");
 		}
-
          //responds to ayyy or with lmao
-    } else if (text.toLowerCase().includes('ayyy')) {
-        var textArray = text.toLowerCase().split(' ');
-        var found = textArray.indexOf('ayyy');
-        if (found != -1) //checks if ayyy is its own word
-            sendMessage(message, 'lmao');
+    } else if ( responses[text] ) {
+        sendMessage(message, responses[text]);
     }
 }
 
@@ -152,6 +145,6 @@ function getTweet(handle, message){
         if (error) {
             sendMessage(message, "Beep Boop: User could not be found");
         }
-            sendMessage(message, '@' + handle + " 's latest tweet: \n\n" + tweet[0].text);  //Sends tweet text to the channel
+            sendMessage(message, '@' + handle + ":\n\n" +  tweet[0].text);
         });
 }
