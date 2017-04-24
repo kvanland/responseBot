@@ -35,6 +35,8 @@ function output(error, token) {
 
 //bot listens for a message of a particular format and responds
 client.on('message', function(message) {
+    if (message.author.id === client.user.id) return; //ignore bot messages
+
 	var text = message.content;
     if (text.includes(prefix)) {
         processCommand(message);
@@ -87,7 +89,7 @@ function processNonCommand(message) {
 		if (mentionedName === botName) {
 			sendMessage(message, "you're welcome boi");
 		}
-         //responds to ayyy or with lmao
+        //Utilizes generic responses object from responses.json file
     } else if ( responses[text] ) {
         sendMessage(message, responses[text]);
     }

@@ -19,7 +19,7 @@ Node packages to install
 
 ## 1. Commands
 Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol.
-- !latest tweet @x | returns the latest tweet from the twitter user x
+- !latest tweet @x | returns the contents of the latest tweet from the twitter user x
 - description of reminder !reminder x | sends a message to the author of the command with the description in x number of seconds
 - !how dumb is @x | returns a random percentage of how 'dumb' user x is being at that moment
 - !should blah blah blah | returns a response of 'do it up fam!' or 'nah fam' randomly to a question that begins with !should`
