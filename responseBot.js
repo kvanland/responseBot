@@ -118,6 +118,7 @@ function sendMessage(message, text) {
 	message.channel.sendMessage(text);
 }
 
+
 function containsMention(message){
     var mentions = message.mentions.users;
     return (mentions != undefined & mentions.length != 0);
@@ -146,7 +147,16 @@ function getTweet(handle, message){
     Twitter.get('statuses/user_timeline', {screen_name: handle, count: 1},  function(error, tweet, response){
         if (error) {
             sendMessage(message, "Beep Boop: User could not be found");
+            return;
         }
-            sendMessage(message, '@' + handle + ":\n\n" +  tweet[0].text);
+        var tweetLink = 'https://twitter.com/-/status/' + tweet[0].id_str;
+
+        message.channel.sendEmbed({
+            color: 3447003,
+            title: '@' + handle + "'s Latest Tweet",
+            url: tweetLink
         });
+        sendMessage(message, tweet[0].text);
+        
+    });
 }
