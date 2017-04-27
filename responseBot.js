@@ -203,15 +203,15 @@ function getTweet (handle, message) {
  *
  */
 
- var youtubePackage = require('youtube-node');
+var youtubePackage = require('youtube-node');
 
- var youtube = new youtubePackage();
+var youtube = new youtubePackage();
 
- var youtubeConfig = require('./youtubeConfig.json');
+var youtubeConfig = require('./youtubeConfig.json');
 
- youtube.setKey(youtubeConfig.key);
+youtube.setKey(youtubeConfig.key);
 
- function searchYoutube (message, searchTerm) {
+function searchYoutube (message, searchTerm) {
     youtube.search (searchTerm, 3, function(error, result) {
         if (error) {
             sendMessage(message, 'Beep Boop: Something went wrong');
@@ -230,7 +230,5 @@ function getTweet (handle, message) {
         if (result.items[0].id.channelId !== undefined) {
             sendMessage(message, 'https://youtube.com/channel/' + result.items[0].id.channelId);
         }
-
-
     });
- }
+}
