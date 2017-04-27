@@ -19,13 +19,13 @@ const prefix = config.prefix;
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
-client.on('ready', function(message){
+client.on ('ready', function(message) {
   console.log('I am ready!');
 });
 
 //log our bot in
 client.login(token, output);
-function output(error, token) {
+function output (error, token) {
     if (error) {
         console.log(`There was an error logging in: ${error}`);
         return;
@@ -34,7 +34,7 @@ function output(error, token) {
 }
 
 //bot listens for a message of a particular format and responds
-client.on('message', function(message) {
+client.on('message', function (message) {
     if (message.author.id === client.user.id) return; //ignore bot messages
 
 	var text = message.content;
@@ -48,7 +48,7 @@ client.on('message', function(message) {
 });
 
 //Process commands from users
-function processCommand(message) {
+function processCommand (message) {
     var text = message.content;
     var mentions = message.mentions.users;
 
@@ -58,13 +58,16 @@ function processCommand(message) {
         client.setTimeout(function(){
             sendMessage(message, message.author.username + ' here is your reminder ' + reminder);
         }, time);
-    } else if (text.includes('latest tweet') && text.includes('@')) {
+    }
+    else if (text.includes('latest tweet') && text.includes('@')) {
         var username = text.substring(text.indexOf('@')+1);
         getTweet(username, message); //sends message from within due to asynchronous twitter request
-    } else if (text.includes('how dumb is') && containsMention(message)) {
+    }
+    else if (text.includes('how dumb is') && containsMention(message)) {
         var name = getFirstMentionUsername(message);
 		sendMessage(message, name + " is being " + rand(1, 100) + "% dumb right now!");
-    } else if (text.toLowerCase().includes("should")) {
+    }
+    else if (text.toLowerCase().includes("should")) {
         var decision = rand(1, 2);
         if (decision == 1) {
 		    sendMessage(message, message.author.username + "do it up fam!");
@@ -72,13 +75,21 @@ function processCommand(message) {
             sendMessage(message, message.author.username + " nah fam.");
         }
     }
+    else if (text.toLowerCase().includes("choose user")){
+        var user = getRandomUser(message);
+        sendMessage(message, 'The chosen user is: ' + user);
+    }
+    else if (text.toLowerCase().includes('youtube')) {
+        var searchTerm = text.substring(text.indexOf('youtube') + 7);
+        searchYoutube(message, searchTerm);
+    }
 }
 
 //JSON object that contians generic responses to specific messages
 var responses = require('./responses.json');
 
 //Process noncommands from anyone
-function processNonCommand(message) {
+function processNonCommand (message) {
     var text = message.content;
     var mentions = message.mentions.users;
 
@@ -96,7 +107,7 @@ function processNonCommand(message) {
 }
 
 //Processes the commands by the admin based on adminID in discordConfig.json
-function processAdminCommand(message){
+function processAdminCommand (message) {
     var text = message.content;
         //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
     if (text.startsWith('/' + 'prefix')) {
@@ -109,32 +120,57 @@ function processAdminCommand(message){
     }
 }
 
-//returns random min to max integer
-function rand(min, max) {
-	 return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function sendMessage(message, text) {
+function sendMessage (message, text) {
 	message.channel.sendMessage(text);
 }
 
-
-function containsMention(message){
+function containsMention (message) {
     var mentions = message.mentions.users;
     return (mentions != undefined & mentions.length != 0);
 }
 
-function getFirstMentionUsername(message) {
+function getFirstMentionUsername (message) {
     var key = message.mentions.users.firstKey();
     return message.mentions.users.get(key).username;
 }
 
 /*
  *
+ * Command logic Functions
+ *
+ */
+
+ //returns random min to max integer
+ function rand (min, max) {
+ 	 return Math.floor(Math.random() * (max - min + 1)) + min;
+ }
+
+ function getRandomUser (message) {
+    var channel = message.channel;
+    var members = message.channel.members;
+    var membersKeys = members.keyArray();
+    var onlineMembers = [];
+
+    for (var i = 0; i < membersKeys.length; i++) {
+        var member = members.get(membersKeys[i]);
+        if (member.presence.status === 'online') {
+           onlineMembers.push(member);
+        }
+    }
+
+    var chosenIndex = rand(0, onlineMembers.length-1);
+    var chosenMember = onlineMembers[chosenIndex];
+    return chosenMember.displayName + " aka @" + chosenMember.user.username + "#" + chosenMember.user.discriminator;
+    // return 'same';
+ }
+
+
+/*
+ *
  * Twitter Package
  *
  *
-*/
+ */
 
 var TwitterPackage = require('twitter');
 
@@ -143,7 +179,7 @@ var secret = require('./twitterConfig.json');
 var Twitter = new TwitterPackage(secret);
 
 //Returns the latest tweet from a specific twitter handle
-function getTweet(handle, message){
+function getTweet (handle, message) {
     Twitter.get('statuses/user_timeline', {screen_name: handle, count: 1},  function(error, tweet, response){
         if (error) {
             sendMessage(message, "Beep Boop: User could not be found");
@@ -157,6 +193,44 @@ function getTweet(handle, message){
             url: tweetLink
         });
         sendMessage(message, tweet[0].text);
-        
+
     });
 }
+
+/*
+ *
+ * Youtube Package
+ *
+ */
+
+ var youtubePackage = require('youtube-node');
+
+ var youtube = new youtubePackage();
+
+ var youtubeConfig = require('./youtubeConfig.json');
+
+ youtube.setKey(youtubeConfig.key);
+
+ function searchYoutube (message, searchTerm) {
+    youtube.search (searchTerm, 3, function(error, result) {
+        if (error) {
+            sendMessage(message, 'Beep Boop: Something went wrong');
+            console.log(error);
+            return;
+        }
+        console.log(result);
+        console.log('\n\n\n');
+        console.log(result.items);
+        console.log('\n\n\n');
+        console.log(result.items[0].id);
+        var video = result.items[0].id.videoId;
+        if (result.items[0].id.videoId !== undefined) {
+            sendMessage(message, 'https://youtube.com/watch?v=' + result.items[0].id.videoId);
+        }
+        if (result.items[0].id.channelId !== undefined) {
+            sendMessage(message, 'https://youtube.com/channel/' + result.items[0].id.channelId);
+        }
+
+
+    });
+ }

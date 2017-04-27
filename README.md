@@ -15,6 +15,12 @@ Node packages to install
 
 [How to set up a twitter application](http://techknights.org/workshops/nodejs-twitterbot/)
 
+### youtube-node | npm install youtube-node
+
+[Youtube-node npm page](https://www.npmjs.com/package/youtube-node)
+
+[Set up a youtube api key](https://console.developers.google.com/apis/dashboard)
+
 # Functions
 
 ## 1. Commands
@@ -23,6 +29,7 @@ Description: Commands can be made by any user to request that the bot do somethi
 - description of reminder !reminder x | sends a message to the author of the command with the description in x number of seconds
 - !how dumb is @x | returns a random percentage of how 'dumb' user x is being at that moment
 - !should blah blah blah | returns a response of 'do it up fam!' or 'nah fam' randomly to a question that begins with !should`
+- !youtube x | returns first result of a youtube search for term x
 
 ## 2. Non-Commands
 Description: Non-Commands are bits of text that will be responded to by the bot without the user of the ! symbol.
