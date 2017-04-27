@@ -1,6 +1,6 @@
 # ResponseBot: The multifunction discord text chat bot
 
-Node packages to install
+## Node packages to install
 ### Discord.js | npm install discord.js
 
 [Discord.js npm page](https://www.npmjs.com/package/discord.js)
@@ -20,6 +20,22 @@ Node packages to install
 [Youtube-node npm page](https://www.npmjs.com/package/youtube-node)
 
 [Set up a youtube api key](https://console.developers.google.com/apis/dashboard)
+
+# Configuration
+
+### discordConfig.json
+- token: The token that corresponds to your discord bot
+- prefix: The symbol that you prepend all Commands
+- admin: The ID of the designated admin on the discord server
+
+### twitterConfig.json
+- consumer_key: Obtained by creating a twitter application
+- consumer_secret: Obtained by creating a twitter application
+- access_token_key: Obtained by creating a twitter application
+- access_token_secret: Obtained by creating a twitter application
+
+### youtubeConfig.json
+- key: The Youtube api key
 
 # Functions
 
