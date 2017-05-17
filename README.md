@@ -44,6 +44,9 @@ These are the values that you must alter to get ResponseBot to set up correctly
 
 ## 1. Commands
 Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol.
+- !help
+> Returns a link to this README
+
 - !latest tweet @x
 > Returns the contents of the latest tweet from the twitter user x. Keep in mind this only works for public accounts.
 

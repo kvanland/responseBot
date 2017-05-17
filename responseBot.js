@@ -94,6 +94,13 @@ function processCommand (message) {
         var searchTerm = text.substring(text.indexOf('youtube') + 7);
         searchYoutube(message, searchTerm);
     }
+    else if (text.toLowerCase().includes('!help')) {
+        message.channel.sendEmbed({
+            color: 3447003,
+            title: "Here is the README for responseBot!",
+            url: 'https://github.com/kvanland/responseBot/blob/master/README.md'
+        });
+    }
 }
 
 //JSON object that contians generic responses to specific messages
