@@ -59,10 +59,16 @@ Description: Commands can be made by any user to request that the bot do somethi
 - !youtube x
 > Returns first result of a youtube search for term x
 
+- !choose user
+> Returns a random user that is online
+
+- !choose role
+> Returns a random role that has at least one member online
+
 ## 2. Non-Commands
 Description: Non-Commands are bits of text that will be responded to by the bot without the user of the ! symbol.
 - ayyy
-> Bot responds with 'lmao' for the exact phrase 'ayyy'
+> Bot responds with 'lmao' to the exact phrase 'ayyy'
 
 - kys
 > Bot responds with 'National Suicide Prevention Hotline: 1-800-273-8255' to the exact phrase 'kys'

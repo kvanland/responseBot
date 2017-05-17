@@ -39,14 +39,11 @@ client.on('message', function (message) {
 
 	var text = message.content;
     if (text.includes(prefix)) { //Commands
-        message.channel.startTyping();
         processCommand(message);
     } else if (text.includes('/') && message.author.id === adminID) { //Admin Commands
         processAdminCommand(message);
-        message.channel.startTyping();
     } else {
         processNonCommand(message);
-        message.channel.startTyping();
     }
     message.channel.stopTyping(true);
 });
@@ -83,9 +80,15 @@ function processCommand (message) {
             sendMessage(message, message.author.username + " nah fam.");
         }
     }
-    else if (text.toLowerCase().includes("!choose user")){
+    else if (text.toLowerCase().includes("!choose user")) {
         var user = getRandomUser(message);
         sendMessage(message, 'The chosen user is: ' + user);
+    }
+    else if (text.toLowerCase().includes("!choose role")) {
+        if (message.guild.available) {
+            var role = getRandomRole(message);
+            sendMessage(message, 'The chosen role is: ' + role);
+        }
     }
     else if (text.toLowerCase().includes('!youtube')) {
         var searchTerm = text.substring(text.indexOf('youtube') + 7);
@@ -129,8 +132,11 @@ function processAdminCommand (message) {
 }
 
 function sendMessage (message, text) {
-	message.channel.sendMessage(text);
-    message.channel.stopTyping(true);
+    message.channel.startTyping();
+    client.setTimeout( function() {
+        message.channel.sendMessage(text);
+    }, 1000);
+	message.channel.stopTyping(true);
 }
 
 function containsMention (message) {
@@ -150,11 +156,11 @@ function getFirstMentionUsername (message) {
  */
 
  //returns random min to max integer
- function rand (min, max) {
- 	 return Math.floor(Math.random() * (max - min + 1)) + min;
- }
+function rand (min, max) {
+ 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
- function getRandomUser (message) {
+function getRandomUser (message) {
     var channel = message.channel;
     var members = message.channel.members;
     var membersKeys = members.keyArray();
@@ -162,7 +168,7 @@ function getFirstMentionUsername (message) {
 
     for (var i = 0; i < membersKeys.length; i++) {
         var member = members.get(membersKeys[i]);
-        if (member.presence.status === 'online') {
+        if (member.presence.status === 'online' && member.id != client.user.id) {
            onlineMembers.push(member);
         }
     }
@@ -170,7 +176,22 @@ function getFirstMentionUsername (message) {
     var chosenIndex = rand(0, onlineMembers.length-1);
     var chosenMember = onlineMembers[chosenIndex];
     return chosenMember.displayName + " aka @" + chosenMember.user.username + "#" + chosenMember.user.discriminator;
- }
+}
+
+function getRandomRole (message) {
+    var guildRoles = message.guild.roles.array();
+    var availableRoles = [];
+    for (var i = 0; i < guildRoles.length; i++) {
+        var members = guildRoles[i].members.array();
+        for(var j = 0; j < members.length; j++) {
+            if(members[j].presence.status === 'online' && guildRoles.indexOf(guildRoles[i].name) === -1 && guildRoles[i].name !== '@everyone') {
+                availableRoles.push(guildRoles[i].name);
+            }
+        }
+    }
+    var chosenRole = availableRoles[rand(0, availableRoles.length-1)];
+    return chosenRole;
+}
 
 
 /*
