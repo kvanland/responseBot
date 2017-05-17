@@ -45,13 +45,13 @@ These are the values that you must alter to get ResponseBot to set up correctly
 ## 1. Commands
 Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol.
 - !latest tweet @x
-> Returns the contents of the latest tweet from the twitter user x
+> Returns the contents of the latest tweet from the twitter user x. Keep in mind this only works for public accounts.
 
 - description of reminder !reminder x
 > Sends a message to the author of the command with the description in x number of seconds
 
-- !how dumb is @x
-> Returns a random percentage of how 'dumb' user x is being at that moment
+- !random x-y
+> Returns a random whole number between number x and number y given that x is less than y
 
 - !should blah blah blah
 > Returns a response of 'do it up fam!' or 'nah fam' randomly to a question that begins with !should`

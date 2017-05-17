@@ -17,10 +17,10 @@ const adminID = config.adminID;
 const prefix = config.prefix;
 
 
-// the ready event is vital, it means that your bot will only start reacting to information
+// The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 client.on ('ready', function(message) {
-  console.log('I am ready!');
+  console.log('ResponseBot is ready!');
 });
 
 //log our bot in
@@ -33,18 +33,22 @@ function output (error, token) {
         console.log(`Logged in. Token: ${token}`);
 }
 
-//bot listens for a message of a particular format and responds
+//Bot listens for a message of a particular format and responds
 client.on('message', function (message) {
-    if (message.author.id === client.user.id) return; //ignore bot messages
+    if (message.author.id === client.user.id) return; //The bot will ignore messages it sends itself
 
 	var text = message.content;
-    if (text.includes(prefix)) {
+    if (text.includes(prefix)) { //Commands
+        message.channel.startTyping();
         processCommand(message);
-    } else if (text.includes('/') && message.author.id === adminID) {
+    } else if (text.includes('/') && message.author.id === adminID) { //Admin Commands
         processAdminCommand(message);
+        message.channel.startTyping();
     } else {
         processNonCommand(message);
+        message.channel.startTyping();
     }
+    message.channel.stopTyping(true);
 });
 
 //Process commands from users
@@ -52,22 +56,26 @@ function processCommand (message) {
     var text = message.content;
     var mentions = message.mentions.users;
 
-    if (text.includes('reminder')) {
+    if (text.includes('!reminder')) {
         var time = parseInt(text.substring(text.indexOf('reminder ') + 9), 10) * 1000; //Time is requested in seconds so 60 would be a minute
         var reminder = text.substring(0, text.indexOf('reminder'));
         client.setTimeout(function(){
             sendMessage(message, message.author.username + ' here is your reminder ' + reminder);
         }, time);
     }
-    else if (text.includes('latest tweet') && text.includes('@')) {
+    else if (text.includes('!latest tweet') && text.includes('@')) {
         var username = text.substring(text.indexOf('@')+1);
         getTweet(username, message); //sends message from within due to asynchronous twitter request
     }
-    else if (text.includes('how dumb is') && containsMention(message)) {
-        var name = getFirstMentionUsername(message);
-		sendMessage(message, name + " is being " + rand(1, 100) + "% dumb right now!");
+    else if (text.includes('!random')) {
+        var splitMessage = text.split(" ");
+        var parameters = splitMessage[splitMessage.length-1].split("-");
+        var minVal = parseInt(parameters[0]);
+        var maxVal = parseInt(parameters[1]);
+        if(minVal < maxVal)
+		      sendMessage(message, "" + rand(minVal, maxVal));
     }
-    else if (text.toLowerCase().includes("should")) {
+    else if (text.toLowerCase().includes("!should")) {
         var decision = rand(1, 2);
         if (decision == 1) {
 		    sendMessage(message, message.author.username + "do it up fam!");
@@ -75,11 +83,11 @@ function processCommand (message) {
             sendMessage(message, message.author.username + " nah fam.");
         }
     }
-    else if (text.toLowerCase().includes("choose user")){
+    else if (text.toLowerCase().includes("!choose user")){
         var user = getRandomUser(message);
         sendMessage(message, 'The chosen user is: ' + user);
     }
-    else if (text.toLowerCase().includes('youtube')) {
+    else if (text.toLowerCase().includes('!youtube')) {
         var searchTerm = text.substring(text.indexOf('youtube') + 7);
         searchYoutube(message, searchTerm);
     }
@@ -122,6 +130,7 @@ function processAdminCommand (message) {
 
 function sendMessage (message, text) {
 	message.channel.sendMessage(text);
+    message.channel.stopTyping(true);
 }
 
 function containsMention (message) {
@@ -161,7 +170,6 @@ function getFirstMentionUsername (message) {
     var chosenIndex = rand(0, onlineMembers.length-1);
     var chosenMember = onlineMembers[chosenIndex];
     return chosenMember.displayName + " aka @" + chosenMember.user.username + "#" + chosenMember.user.discriminator;
-    // return 'same';
  }
 
 
@@ -183,17 +191,12 @@ function getTweet (handle, message) {
     Twitter.get('statuses/user_timeline', {screen_name: handle, count: 1},  function(error, tweet, response){
         if (error) {
             sendMessage(message, "Beep Boop: User could not be found");
+            console.log(error);
             return;
         }
-        var tweetLink = 'https://twitter.com/-/status/' + tweet[0].id_str;
+        var tweetLink = 'https://twitter.com/' + handle + '/status/' + tweet[0].id_str;
 
-        message.channel.sendEmbed({
-            color: 3447003,
-            title: '@' + handle + "'s Latest Tweet",
-            url: tweetLink
-        });
-        sendMessage(message, tweet[0].text);
-
+        sendMessage(message, tweetLink);
     });
 }
 
@@ -218,11 +221,6 @@ function searchYoutube (message, searchTerm) {
             console.log(error);
             return;
         }
-        console.log(result);
-        console.log('\n\n\n');
-        console.log(result.items);
-        console.log('\n\n\n');
-        console.log(result.items[0].id);
         var video = result.items[0].id.videoId;
         if (result.items[0].id.videoId !== undefined) {
             sendMessage(message, 'https://youtube.com/watch?v=' + result.items[0].id.videoId);
