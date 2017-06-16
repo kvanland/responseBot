@@ -76,6 +76,9 @@ Description: Non-Commands are bits of text that will be responded to by the bot 
 - kys
 > Bot responds with 'National Suicide Prevention Hotline: 1-800-273-8255' to the exact phrase 'kys'
 
+- (Some palindrome)
+> Bot responds to any palindrome with '"(Some palindrome)" is a palindrome!'. Note that it only excludes spaces when considering whether a message is a palindrome.
+
 ## 3. Admin Commands
 Description: Commands that can only be executed by the admin. Admin commands include a / symbol.
 - /prefix x

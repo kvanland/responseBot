@@ -51,7 +51,6 @@ client.on('message', function (message) {
 //Process commands from users
 function processCommand (message) {
     var text = message.content;
-    var mentions = message.mentions.users;
 
     if (text.includes('!reminder')) {
         var time = parseInt(text.substring(text.indexOf('reminder ') + 9), 10) * 1000; //Time is requested in seconds so 60 would be a minute
@@ -121,12 +120,16 @@ function processNonCommand (message) {
         //Utilizes generic responses object from responses.json file
     } else if ( responses[text] ) {
         sendMessage(message, responses[text]);
+    } else {
+        checkForPalindrome(message);
     }
 }
 
 //Processes the commands by the admin based on adminID in discordConfig.json
 function processAdminCommand (message) {
     var text = message.content;
+    console.log(text);
+    var mentions = message.mentions.users.array();
         //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
     if (text.startsWith('/' + 'prefix')) {
         //Get arguements for the command, as !prefix +
@@ -135,13 +138,21 @@ function processAdminCommand (message) {
             //change the configuration prefix
             config.prefix = args[0];
         }
+    } else if (text.includes('mute')) {
+        console.log(mentions);
+        if (mentions.length != 0) {
+            console.log("Mute!");
+            client.muteMember(mentions[0], message.channel, function(error) {
+                console.log(error);
+            })
+        }
     }
 }
 
 function sendMessage (message, text) {
     message.channel.startTyping();
     client.setTimeout( function() {
-        message.channel.sendMessage(text);
+        message.channel.send(text);
     }, 1000);
 	message.channel.stopTyping(true);
 }
@@ -158,7 +169,7 @@ function getFirstMentionUsername (message) {
 
 /*
  *
- * Command logic Functions
+ * Logic Functions
  *
  */
 
@@ -198,6 +209,20 @@ function getRandomRole (message) {
     }
     var chosenRole = availableRoles[rand(0, availableRoles.length-1)];
     return chosenRole;
+}
+
+function checkForPalindrome (message) {
+    var text = message.content;
+    var trimmedText = text.replace(/ /g,""); //replaces all spaces with empty characters
+    console.log(trimmedText);
+    var length = trimmedText.length;
+    for (var i = 0; i < (length/2); i++) {
+        if (trimmedText.charAt(i) != trimmedText.charAt(length - i - 1)) {
+            console.log(trimmedText.charAt(i) + " " + trimmedText.charAt(length - i - 1));
+            return
+        }
+    }
+    sendMessage(message, "'" + text + "'" + " is a palindrome!")
 }
 
 
