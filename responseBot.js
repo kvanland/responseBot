@@ -74,9 +74,9 @@ function processCommand (message) {
     else if (text.toLowerCase().includes("!should")) {
         var decision = rand(1, 2);
         if (decision == 1) {
-		    sendMessage(message, message.author.username + "do it up fam!");
+		    sendMessage(message, message.author.username + ", do it up fam!");
         } else {
-            sendMessage(message, message.author.username + " nah fam.");
+            sendMessage(message, message.author.username + ", nah fam.");
         }
     }
     else if (text.toLowerCase().includes("!choose user")) {
