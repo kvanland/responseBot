@@ -100,6 +100,21 @@ function processCommand (message) {
             url: 'https://github.com/kvanland/responseBot/blob/master/README.md'
         });
     }
+    /*
+    else if (text.toLowerCase().includes('!wordcloud')) {
+        console.log("Verified word cloud request");
+        var messagesPromise = message.channel.fetchMessages({limit: 100});
+        messagesPromise.then((messages) => {
+            var messagesArray = messages.array();
+            console.log(messagesArray.length);
+
+            for(var i = 0; i < messagesArray.length; i++){
+                console.log(messagesArray[i]);
+            }
+        });
+        console.log("Got the messages");
+    }
+    */
 }
 
 //JSON object that contians generic responses to specific messages
@@ -128,7 +143,6 @@ function processNonCommand (message) {
 //Processes the commands by the admin based on adminID in discordConfig.json
 function processAdminCommand (message) {
     var text = message.content;
-    console.log(text);
     var mentions = message.mentions.users.array();
         //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
     if (text.startsWith('/' + 'prefix')) {
@@ -138,6 +152,7 @@ function processAdminCommand (message) {
             //change the configuration prefix
             config.prefix = args[0];
         }
+    /*
     } else if (text.includes('mute')) {
         console.log(mentions);
         if (mentions.length != 0) {
@@ -147,6 +162,7 @@ function processAdminCommand (message) {
             })
         }
     }
+    */
 }
 
 function sendMessage (message, text) {
@@ -214,11 +230,9 @@ function getRandomRole (message) {
 function checkForPalindrome (message) {
     var text = message.content;
     var trimmedText = text.replace(/ /g,""); //replaces all spaces with empty characters
-    console.log(trimmedText);
     var length = trimmedText.length;
     for (var i = 0; i < (length/2); i++) {
         if (trimmedText.charAt(i) != trimmedText.charAt(length - i - 1)) {
-            console.log(trimmedText.charAt(i) + " " + trimmedText.charAt(length - i - 1));
             return
         }
     }
