@@ -152,6 +152,7 @@ function processAdminCommand (message) {
             //change the configuration prefix
             config.prefix = args[0];
         }
+    }
     /*
     } else if (text.includes('mute')) {
         console.log(mentions);
@@ -296,5 +297,4 @@ function searchYoutube (message, searchTerm) {
             sendMessage(message, 'https://youtube.com/channel/' + result.items[0].id.channelId);
         }
     });
-}
 }
