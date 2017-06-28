@@ -23,7 +23,7 @@ client.on ('ready', function(message) {
   console.log('ResponseBot is ready!');
 });
 
-//log our bot in
+//Log our bot in
 client.login(token, output);
 function output (error, token) {
     if (error) {
@@ -35,12 +35,12 @@ function output (error, token) {
 
 //Bot listens for a message of a particular format and responds
 client.on('message', function (message) {
-    if (message.author.id === client.user.id) return; //The bot will ignore messages it sends itself
+    if (message.author.bot) return; //Ignores all bot messages
 
-	var text = message.content;
-    if (text.includes(prefix)) { //Commands
+    var text = message.content;
+    if (text.startsWith(prefix)) {
         processCommand(message);
-    } else if (text.includes('/') && message.author.id === adminID) { //Admin Commands
+    } else if (text.startsWith('~') && message.author.id === adminID) {
         processAdminCommand(message);
     } else {
         processNonCommand(message);
@@ -50,71 +50,69 @@ client.on('message', function (message) {
 
 //Process commands from users
 function processCommand (message) {
-    var text = message.content;
+    var text = message.content.toLowerCase();
 
-    if (text.includes('!reminder')) {
-        var time = parseInt(text.substring(text.indexOf('reminder ') + 9), 10) * 1000; //Time is requested in seconds so 60 would be a minute
-        var reminder = text.substring(0, text.indexOf('reminder'));
-        client.setTimeout(function(){
-            sendMessage(message, message.author.username + ' here is your reminder ' + reminder);
-        }, time);
+    if (text.startsWith(prefix + 'reminder')) {
+        let args = text.split(" ").slice(1);
+        var time = parseInt(args[0], 10) * 1000; //Time is requested in seconds so 60 would be a minute
+        if (isNaN(time)) {
+            sendMessage(message, message.author.username + " you need to set a valid time for your reminder.");
+        }
+        else {
+            args = args.slice(1);
+            var reminder = args.join().replace(/,/g," ");
+            client.setTimeout(function(){
+                sendMessage(message, message.author.username + ' here is your reminder. \n' + reminder);
+            }, time);
+        }
     }
-    else if (text.includes('!latest tweet') && text.includes('@')) {
+    else if (text.startsWith(prefix + 'latest tweet') && text.includes('@')) {
         var username = text.substring(text.indexOf('@')+1);
         getTweet(username, message); //sends message from within due to asynchronous twitter request
     }
-    else if (text.includes('!random')) {
+    else if (text.startsWith(prefix + 'random')) {
         var splitMessage = text.split(" ");
         var parameters = splitMessage[splitMessage.length-1].split("-");
         var minVal = parseInt(parameters[0]);
         var maxVal = parseInt(parameters[1]);
-        if(minVal < maxVal)
-		      sendMessage(message, "" + rand(minVal, maxVal));
+        if (!isNaN(minVal) && !isNaN(maxVal)) {
+            if(minVal < maxVal) sendMessage(message, "" + rand(minVal, maxVal));
+            else sendMessage(message, "" +rand(maxVal, minVal));
+        }
+        else {
+            sendMessage(message, "Please use valid numbers for the random command.");
+        }
     }
-    else if (text.toLowerCase().includes("!should")) {
-        var decision = rand(1, 2);
-        if (decision == 1) {
+    else if (text.startsWith(prefix + "should")) {
+        if (rand(0,1)) {
 		    sendMessage(message, message.author.username + ", do it up fam!");
-        } else {
+        }
+        else {
             sendMessage(message, message.author.username + ", nah fam.");
         }
     }
-    else if (text.toLowerCase().includes("!choose user")) {
+    else if (text.startsWith(prefix + "choose user")) {
         var user = getRandomUser(message);
         sendMessage(message, 'The chosen user is: ' + user);
     }
-    else if (text.toLowerCase().includes("!choose role")) {
+    else if (text.startsWith(prefix + "choose role")) {
         if (message.guild.available) {
             var role = getRandomRole(message);
             sendMessage(message, 'The chosen role is: ' + role);
         }
     }
-    else if (text.toLowerCase().includes('!youtube')) {
-        var searchTerm = text.substring(text.indexOf('youtube') + 7);
-        searchYoutube(message, searchTerm);
+    else if (text.startsWith(prefix + 'youtube')) {
+        var searchTerm = text.substring(text.indexOf('!youtube') + 8).trim();
+        if (searchTerm === "") sendMessage(message, 'https://youtu.be/K93zcgFsynk'); //Blank search term give blank title video
+        else searchYoutube(message, searchTerm);
     }
-    else if (text.toLowerCase().includes('!help')) {
+    else if (text.startsWith(prefix + 'help')) {
         message.channel.sendEmbed({
             color: 3447003,
-            title: "Here is the README for responseBot!",
+            title: "Here is the README for responseBot! Please take a look and contact the developer for any questions.",
             url: 'https://github.com/kvanland/responseBot/blob/master/README.md'
         });
     }
-    /*
-    else if (text.toLowerCase().includes('!wordcloud')) {
-        console.log("Verified word cloud request");
-        var messagesPromise = message.channel.fetchMessages({limit: 100});
-        messagesPromise.then((messages) => {
-            var messagesArray = messages.array();
-            console.log(messagesArray.length);
-
-            for(var i = 0; i < messagesArray.length; i++){
-                console.log(messagesArray[i]);
-            }
-        });
-        console.log("Got the messages");
-    }
-    */
 }
 
 //JSON object that contians generic responses to specific messages
@@ -124,18 +122,18 @@ var responses = require('./responses.json');
 function processNonCommand (message) {
     var text = message.content;
     var mentions = message.mentions.users;
-
-        //responds to thank you
-    if (text.toLowerCase().includes("thanks") && containsMention(message)) {
-		var mentionedName = getFirstMentionUsername(message);
-        var botName = client.user.username;
-		if (mentionedName === botName) {
-			sendMessage(message, "you're welcome boi");
-		}
         //Utilizes generic responses object from responses.json file
-    } else if ( responses[text] ) {
+    if ( responses[text] ) {
         sendMessage(message, responses[text]);
-    } else {
+    }
+    else if (text.toLowerCase().includes("thanks") && containsMention(message)) {
+        var mentionedName = getFirstMentionUsername(message);
+        var botName = client.user.username;
+        if (mentionedName === botName) {
+            sendMessage(message, "You're welcome!");
+        }
+    }
+    else {
         checkForPalindrome(message);
     }
 }
@@ -145,25 +143,14 @@ function processAdminCommand (message) {
     var text = message.content;
     var mentions = message.mentions.users.array();
         //Allows changing of default command prefix. Note: It will still go to default ! when the bot is restarted
-    if (text.startsWith('/' + 'prefix')) {
+    if (text.startsWith('~' + 'prefix')) {
         //Get arguements for the command, as !prefix +
         let args = text.split(" ").slice(1);
-        if ( args[0].localeCompare('/') != 0) {
+        if ( args[0].localeCompare('~') != 0) {
             //change the configuration prefix
             config.prefix = args[0];
         }
     }
-    /*
-    } else if (text.includes('mute')) {
-        console.log(mentions);
-        if (mentions.length != 0) {
-            console.log("Mute!");
-            client.muteMember(mentions[0], message.channel, function(error) {
-                console.log(error);
-            })
-        }
-    }
-    */
 }
 
 function sendMessage (message, text) {
@@ -229,15 +216,16 @@ function getRandomRole (message) {
 }
 
 function checkForPalindrome (message) {
-    var text = message.content;
+    var text = message.content.toLowerCase();
     var trimmedText = text.replace(/ /g,""); //replaces all spaces with empty characters
+    if (trimmedText.length < 6) return;
     var length = trimmedText.length;
     for (var i = 0; i < (length/2); i++) {
         if (trimmedText.charAt(i) != trimmedText.charAt(length - i - 1)) {
-            return
+            return;
         }
     }
-    sendMessage(message, "'" + text + "'" + " is a palindrome!")
+    sendMessage(message, "'" + text + "'" + " is a palindrome!");
 }
 
 

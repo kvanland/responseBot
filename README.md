@@ -43,18 +43,18 @@ These are the values that you must alter to get ResponseBot to set up correctly
 # Functions
 
 ## 1. Commands
-Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol.
+Description: Commands can be made by any user to request that the bot do something. Commands include a ! symbol by default.
 - !help
-> Returns a link to this README
+> Returns a link to this README document
 
 - !latest tweet @x
 > Returns the contents of the latest tweet from the twitter user x. Keep in mind this only works for public accounts.
 
-- description of reminder !reminder x
-> Sends a message to the author of the command with the description in x number of seconds
+- !reminder x description of reminder !
+> Returns a message with the description in x number of seconds.
 
 - !random x-y
-> Returns a random whole number between number x and number y given that x is less than y
+> Returns a random whole number between number x and number y.
 
 - !should blah blah blah
 > Returns a response of 'do it up fam!' or 'nah fam' randomly to a question that begins with !should`
@@ -70,6 +70,9 @@ Description: Commands can be made by any user to request that the bot do somethi
 
 ## 2. Non-Commands
 Description: Non-Commands are bits of text that will be responded to by the bot without the user of the ! symbol.
+- thanks @responseBot
+> Bot responds with 'You're welcome!'
+
 - ayyy
 > Bot responds with 'lmao' to the exact phrase 'ayyy'
 
@@ -77,9 +80,9 @@ Description: Non-Commands are bits of text that will be responded to by the bot 
 > Bot responds with 'National Suicide Prevention Hotline: 1-800-273-8255' to the exact phrase 'kys'
 
 - (Some palindrome)
-> Bot responds to any palindrome with '"(Some palindrome)" is a palindrome!'. Note that it only excludes spaces when considering whether a message is a palindrome.
+> Bot responds to any palindrome with length less than 6 with '"(Some palindrome)" is a palindrome!'. Note that it only excludes spaces when considering whether a message is a palindrome so any other character will be considered by the bot.
 
 ## 3. Admin Commands
 Description: Commands that can only be executed by the admin. Admin commands include a / symbol.
-- /prefix x
+- ~prefix x
 > Changes the prefix for normal commands to x until the bot is restarted
