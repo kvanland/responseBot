@@ -216,16 +216,21 @@ function getRandomRole (message) {
 }
 
 function checkForPalindrome (message) {
-    var text = message.content.toLowerCase();
-    var trimmedText = text.replace(/ /g,""); //replaces all spaces with empty characters
-    if (trimmedText.length < 6) return;
-    var length = trimmedText.length;
+    var text = message.content;
+    if (text.includes('\n')) return;
+
+    var responseText = text.replace(/[^\w\d\s]+/g, ""); //replaces all characters except word and whitespace characters
+
+    var evalText = responseText.replace(/ /g, "").toLowerCase();//replaces all spaces with empty characters
+    var length = evalText.length;
+    if (length < 7) return;
+
     for (var i = 0; i < (length/2); i++) {
-        if (trimmedText.charAt(i) != trimmedText.charAt(length - i - 1)) {
+        if (evalText.charAt(i) != evalText.charAt(length - i - 1)) {
             return;
         }
     }
-    sendMessage(message, "'" + text + "'" + " is a palindrome!");
+    sendMessage(message, "'" + responseText + "'" + " is a palindrome!");
 }
 
 
