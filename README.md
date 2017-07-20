@@ -39,6 +39,9 @@ These are the values that you must alter to get ResponseBot to set up correctly
 ### youtubeConfig.json
 - key: The Youtube api key
 
+#Running ResponseBot
+To run ResponseBot you can enter "node responseBot.js" in the terminal and it will run on your local machine.
+
 
 # Functions
 
@@ -47,25 +50,25 @@ Description: Commands can be made by any user to request that the bot do somethi
 - !help
 > Returns a link to this README document
 
-- !latest tweet @x
+- !latesttweet @x
 > Returns the contents of the latest tweet from the twitter user x. Keep in mind this only works for public accounts.
 
 - !reminder x description of reminder !
 > Returns a message with the description in x number of seconds.
 
-- !random x-y
+- !randomnum x-y
 > Returns a random whole number between number x and number y.
 
-- !should blah blah blah
-> Returns a response of 'do it up fam!' or 'nah fam' randomly to a question that begins with !should`
+- !yesorno blah blah blah
+> Returns a response of 'Yes, *username*' or 'No, *username*' with equal chance for either response`
 
 - !youtube x
-> Returns first result of a youtube search for term x
+> Returns first result of a youtube search for term or phrase x
 
-- !choose user
+- !chooseuser
 > Returns a random user that is online
 
-- !choose role
+- !chooserole
 > Returns a random role that has at least one member online
 
 ## 2. Non-Commands
