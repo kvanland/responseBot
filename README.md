@@ -39,7 +39,7 @@ These are the values that you must alter to get ResponseBot to set up correctly
 ### youtubeConfig.json
 - key: The Youtube api key
 
-#Running ResponseBot
+# Running ResponseBot
 To run ResponseBot you can enter "node responseBot.js" in the terminal and it will run on your local machine.
 
 
