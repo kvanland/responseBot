@@ -50,8 +50,8 @@ client.on('message', function (message) {
 });
 
 
-var functions = require('./commands.js');
-var functionNames = require('./commandNames');
+var commands = require('./commands.js');
+var commandNames = require('./commandNames');
 commands.functions["setClient"](client);
 
 //Process commands from users
