@@ -68,7 +68,7 @@ var responses = require('./responses.json');
 
 //Process noncommands from anyone
 function processNonCommand (message) {
-    var text = message.content;s
+    var text = message.content;
     if ( responses[text] ) {
         sendMessage(message, responses[text]);
     }
