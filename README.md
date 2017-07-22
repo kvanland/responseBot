@@ -39,6 +39,9 @@ These are the values that you must alter to get ResponseBot to set up correctly
 ### youtubeConfig.json
 - key: The Youtube api key
 
+### wolframConfig.json
+- appID: The Wolfram Alpha api key
+
 # Running ResponseBot
 To run ResponseBot you can enter "node responseBot.js" in the terminal and it will run on your local machine.
 
@@ -70,6 +73,12 @@ Description: Commands can be made by any user to request that the bot do somethi
 
 - !chooserole
 > Returns a random role that has at least one member online
+
+- !avatar
+> Returns the url for the user's avatar, essentially returns the user's avatar image
+
+- !wolfram query
+> Returns a whatever wolfram alpha returns based on the query
 
 ## 2. Non-Commands
 Description: Non-Commands are bits of text that will be responded to by the bot without the user of the ! symbol.
