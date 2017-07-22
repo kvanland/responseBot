@@ -240,17 +240,23 @@ function queryWolfram (message, searchTerm) {
             console.log(err);
         }
         else {
-        for(var i = 0; i < result.queryresult.pod.length; i++) {
-            var pod = result.queryresult.pod[i];
-            var str = pod.$.title + ": ";
-            for(var j = 0; j < pod.subpod.length; j++){
-                var subpod = pod.subpod[j];
-                for(var k = 0; k < subpod.plaintext.length; k++)
-                {
-                    str = str.concat(subpod.plaintext[k] + '\t');
+        if (result.queryresult.$.success === "success") {
+            console.log(result);
+            for(var i = 0; i < result.queryresult.pod.length; i++) {
+                var pod = result.queryresult.pod[i];
+                var str = pod.$.title + ": ";
+                for(var j = 0; j < pod.subpod.length; j++){
+                    var subpod = pod.subpod[j];
+                    for(var k = 0; k < subpod.plaintext.length; k++)
+                    {
+                        str = str.concat(subpod.plaintext[k] + '\t');
+                    }
                 }
+                sendMessage(message, str);
             }
-            sendMessage(message, str);
+        }
+        else {
+            sendMessage(message, "Invalid search query");
         }
     }
     });
