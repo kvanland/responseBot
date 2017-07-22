@@ -240,7 +240,7 @@ function queryWolfram (message, searchTerm) {
             console.log(err);
         }
         else {
-        if (result.queryresult.$.success === "success") {
+        if (result.queryresult.$.success === "true") {
             console.log(result);
             for(var i = 0; i < result.queryresult.pod.length; i++) {
                 var pod = result.queryresult.pod[i];
