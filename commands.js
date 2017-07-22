@@ -90,6 +90,16 @@ exports.functions = {
                 sendMessage(message, "You're welcome!");
             }
         }
+    },
+
+    avatar: function(message) {
+        sendMessage(message, "Here is your avatar url, " + message.author.avatarURL);
+    },
+
+    wolfram: function(message) {
+        var text = message.content;
+        var query =  text.substring(text.indexOf('!wolfram') + 8).trim();
+        queryWolfram(message, query);
     }
 }
 
@@ -212,3 +222,36 @@ function searchYoutube (message, searchTerm) {
         }
     });
 }
+
+/*
+ *
+ * Wolfram Package
+ *
+ *
+ */
+
+var nodeWolfram = require("node-wolfram")
+var Wolfram = new nodeWolfram('YPU6TP-UJXYY683K9');
+
+function queryWolfram (message, searchTerm) {
+    Wolfram.query(searchTerm, function(err, result) {
+        if(err) {
+            sendMessage(message, "There was an error: " + err);
+            console.log(err);
+        }
+        else {
+        for(var i = 0; i < result.queryresult.pod.length; i++) {
+            var pod = result.queryresult.pod[i];
+            var str = pod.$.title + ": ";
+            for(var j = 0; j < pod.subpod.length; j++){
+                var subpod = pod.subpod[j];
+                for(var k = 0; k < subpod.plaintext.length; k++)
+                {
+                    str = str.concat(subpod.plaintext[k] + '\t');
+                }
+            }
+            sendMessage(message, str);
+        }
+    }
+    });
+ }
