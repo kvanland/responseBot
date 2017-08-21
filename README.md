@@ -80,10 +80,11 @@ Description: Commands can be made by any user to request that the bot do somethi
 - !wolfram query
 > Returns a whatever wolfram alpha returns based on the query
 
+- !thanks @responseBot
+> Bot responds with 'You're welcome!'
+
 ## 2. Non-Commands
 Description: Non-Commands are bits of text that will be responded to by the bot without the user of the ! symbol.
-- thanks @responseBot
-> Bot responds with 'You're welcome!'
 
 - ayyy
 > Bot responds with 'lmao' to the exact phrase 'ayyy'
