@@ -74,11 +74,11 @@ exports.functions = {
     },
 
     help: function(message) {
-        message.channel.sendEmbed({
+        message.channel.send({embed: {
             color: 3447003,
             title: "Here is the README for responseBot! Please take a look and contact the developer for any questions.",
             url: 'https://github.com/kvanland/responseBot/blob/master/README.md'
-        });
+        }});
     },
 
     thanks: function(message) {
