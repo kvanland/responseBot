@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 //Gets configuration information from discordConfig.json
-const config = require('./discordConfig.json')
+const config = require('./discordConfig.json');
 
 //Token for bot
 const token = config.token;
@@ -52,7 +52,7 @@ client.on('message', function (message) {
 
 var commands = require('./commands.js');
 var commandNames = require('./commandNames');
-commands.functions["setClient"](client);
+commands.functions.setClient(client);
 
 //Process commands from users
 function processCommand (message) {

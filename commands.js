@@ -101,7 +101,7 @@ exports.functions = {
         var query =  text.substring(text.indexOf('!wolfram') + 8).trim();
         queryWolfram(message, query);
     }
-}
+};
 
 //HELPER METHODS
 
@@ -230,7 +230,7 @@ function searchYoutube (message, searchTerm) {
  *
  */
 
-var nodeWolfram = require("node-wolfram")
+var nodeWolfram = require("node-wolfram");
 var Wolfram = new nodeWolfram('YPU6TP-UJXYY683K9');
 
 function queryWolfram (message, searchTerm) {
