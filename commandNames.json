@@ -1,13 +1,13 @@
 {
-    "!reminder": "reminder",
-    "!latesttweet": "latesttweet",
-    "!randomnum": "randomnum",
-    "!yesorno": "yesorno",
-    "!chooseuser": "chooseuser",
-    "!chooserole": "chooserole",
-    "!youtube": "youtube",
-    "!help": "help",
-    "!thanks": "thanks",
-    "!avatar": "avatar",
-    "!wolfram": "wolfram"
+  "!reminder": "reminder",
+  "!latesttweet": "latesttweet",
+  "!randomnum": "randomnum",
+  "!yesorno": "yesorno",
+  "!chooseuser": "chooseuser",
+  "!chooserole": "chooserole",
+  "!youtube": "youtube",
+  "!help": "help",
+  "!thanks": "thanks",
+  "!avatar": "avatar",
+  "!wolfram": "wolfram"
 }
