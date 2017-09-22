@@ -28,10 +28,10 @@ client.login(token, output);
 
 function output(error, token) {
   if (error) {
-    console.log(`There was an error logging in: ${error}`);
+    console.log('There was an error logging in: ${error}');
     return;
   } else
-    console.log(`Logged in. Token: ${token}`);
+    console.log('Logged in. Token: ${token}');
 }
 
 //Bot listens for a message of a particular format and responds
