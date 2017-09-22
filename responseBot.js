@@ -81,7 +81,7 @@ function processAdminCommand(message) {
   var text = message.content;
   var mentions = message.mentions.users.array();
   if (text.startsWith("~" + "prefix")) {
-    let arg = text.split(" ").slice(1);
+    var arg = text.split(" ").slice(1);
     config.prefix = arg[0];
     prefix = config.prefix;
   }
