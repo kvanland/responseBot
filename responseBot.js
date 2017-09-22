@@ -80,11 +80,10 @@ function processNonCommand(message) {
 function processAdminCommand(message) {
   var text = message.content;
   var mentions = message.mentions.users.array();
-  if (text.startsWith('~' + 'prefix')) {
+  if (text.startsWith("~" + "prefix")) {
     let args = text.split(" ").slice(1);
-    if (args[0].localeCompare('~') != 0) {
-      config.prefix = args[0];
-    }
+    config.prefix = args[0];
+    prefix = config.prefix;
   }
 }
 
