@@ -233,7 +233,8 @@ function searchYoutube(message, searchTerm) {
  */
 
 var nodeWolfram = require("node-wolfram");
-var Wolfram = new nodeWolfram('YPU6TP-UJXYY683K9');
+var wolframConfig = require('./wolframConfig.json');
+var Wolfram = new nodeWolfram(wolframConfig.appID);
 
 function queryWolfram(message, searchTerm) {
   Wolfram.query(searchTerm, function(err, result) {
