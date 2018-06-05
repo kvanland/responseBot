@@ -74,8 +74,8 @@ exports.functions = {
     message.channel.send({
       embed: {
         color: 3447003,
-        title: "Here is the README for responseBot! Please take a look and contact the developer for any questions.",
-        url: 'https://github.com/kvanland/responseBot/blob/master/README.md'
+        title: "Here's a website that should help you out!",
+        url: 'https://kvanland.github.io/responseBot/'
       }
     });
   },
