@@ -1,25 +1,22 @@
 # ResponseBot: The multifunction discord text chat bot
 
-## Node packages to install
-### Discord.js | npm install discord.js
+## Packages required
+### Can install all packages with '$yarn install'
 
+### Discord.js
 [Discord.js npm page](https://www.npmjs.com/package/discord.js)
 
 [Discord.js documentation](https://discord.js.org/#/docs/main/stable/general/welcome)
 
 [How to set up a discord bot](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token )
 
-### Twitter | npm install twitter
-
-[Twitter npm page](https://www.npmjs.com/package/twitter)
-
+### Twitter
 [How to set up a twitter application](http://techknights.org/workshops/nodejs-twitterbot/)
 
-### youtube-node | npm install youtube-node
-
-[Youtube-node npm page](https://www.npmjs.com/package/youtube-node)
-
+### youtube-node
 [Set up a youtube api key](https://console.developers.google.com/apis/dashboard)
+
+### node-wolfram
 
 # Configuration
 These are the values that you must alter to get ResponseBot to set up correctly
