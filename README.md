@@ -1,5 +1,5 @@
 # ResponseBot: The multifunction discord text chat bot
-
+[Website](https://kvanland.github.io/responseBot/)
 ## Packages required
 ### Can install all packages with '$yarn install'
 
